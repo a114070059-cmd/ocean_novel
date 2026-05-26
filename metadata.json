@@ -1,0 +1,6 @@
+{
+  "name": "小說海洋 (Novel Ocean)",
+  "description": "以大海為主題的小說心得交流平台，提供優質的小說排行榜與分類瀏覽。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

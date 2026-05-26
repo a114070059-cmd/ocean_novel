@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小說海洋 - 小說心得交流區</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 額外自訂的深海漸層與立體書架樣式 */
+        .ocean-gradient {
+            background: linear-gradient(135deg, #0b132b 0%, #1c2541 50%, #3a506b 100%);
+        }
+        .shelf-shadow {
+            box-shadow: 0 25px 20px -15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-[#0b132b] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white">
+
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-[#0b132b]/80 border-b border-slate-700/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 flex items-center space-x-2 cursor-pointer">
+                    <i class="fa-solid fa-compass-drafting text-cyan-400 text-2xl animate-pulse"></i>
+                    <span class="text-xl font-bold tracking-wider text-white">小說海洋</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-cyan-400 font-medium transition-colors duration-200">首頁</a>
+                    <a href="#leaderboard" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors duration-200">排行榜</a>
+                    <a href="#categories" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors duration-200">分類瀏覽</a>
+                    <a href="#about" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors duration-200">關於我們</a>
+                </div>
+
+                <div class="md:hidden">
+                    <button id="menu-btn" type="button" class="text-slate-400 hover:text-white focus:outline-none" aria-label="Toggle menu">
+                        <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-[#1c2541] border-b border-slate-700/50 px-4 pt-2 pb-4 space-y-2">
+            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-cyan-400 bg-slate-800/50">首頁</a>
+            <a href="#leaderboard" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/30">排行榜</a>
+            <a href="#categories" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/30">分類瀏覽</a>
+            <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/30">關於我們</a>
+        </div>
+    </nav>
+
+    <header class="relative ocean-gradient overflow-hidden py-24 sm:py-32 flex items-center justify-center border-b border-slate-800">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-400 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-blue-600 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative max-w-4xl mx-auto text-center px-4">
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6">
+                在小說的<span class="text-transparent bg-clip-text bg-gradient-to-r select-none from-cyan-400 to-blue-400">海洋</span>中遨遊
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+                探索最優質的網路小說心得與推薦。沈浸在知識與奇幻的巨浪中，尋找真正觸動心靈的文字篇章。
+            </p>
+            <div>
+                <a href="#leaderboard" class="inline-flex items-center justify-center px-8 py-3.5 border border-transparent text-base font-medium rounded-full text-[#0b132b] bg-gradient-to-r from-cyan-400 to-blue-400 hover:from-cyan-300 hover:to-blue-300 transform hover:scale-105 shadow-lg shadow-cyan-500/20 transition-all duration-300">
+                    立即探索排行榜
+                    <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-[0]">
+            <svg class="relative block w-full h-[60px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V128H0V12C47.85,30.84,102,44.77,157.52,52.36c36,4.91,71.4,4.72,107.55,1.75l16.32-1.34Z" class="fill-[#f8fafc]"></path>
+            </svg>
+        </div>
+    </header>
+
+    <section id="leaderboard" class="bg-slate-50 text-slate-800 py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-trophy text-amber-500"></i> 本月核心推薦榜
+                </h2>
+                <div class="h-1 w-20 bg-cyan-600 mx-auto mt-4 rounded-full"></div>
+                <p class="text-slate-500 mt-3">為您精選站內最具深度、評價最高的小說殿堂</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
+                
+                <div class="bg-white rounded-xl overflow-hidden shelf-shadow transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 flex flex-col border border-slate-100 group">
+                    <div class="h-48 bg-gradient-to-br from-slate-900 to-blue-900 p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-extrabold group-hover:scale-110 transition-transform duration-300 select-none">01</div>
+                        <div class="flex justify-between items-start z-10">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-500 text-white shadow-sm">已完結</span>
+                            <div class="flex items-center text-amber-400 gap-0.5 text-sm bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white tracking-wide z-10">詭秘之主</h3>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between bg-white">
+                        <div>
+                            <div class="flex flex-wrap gap-1.5 mb-4">
+                                <span class="px-2 py-0.5 bg-cyan-50 text-cyan-700 text-xs font-medium rounded">玄幻</span>
+                                <span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium rounded">奇幻</span>
+                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded">克蘇魯</span>
+                            </div>
+                            <p class="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6">
+                                蒸汽與機械的浪潮中，誰能觸及非凡？歷史的迷霧中，又是誰在耳語？我從詭秘中醒來，睜眼看見這個充斥着魔藥、占卜與塔羅牌的蒸汽龐克世界。
+                            </p>
+                        </div>
+                        <a href="#" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-slate-900 hover:bg-cyan-600 text-white font-medium text-sm rounded-lg shadow-md transition-colors duration-200">
+                            前往閱讀 <i class="fa-solid fa-book-open ml-2 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl overflow-hidden shelf-shadow transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 flex flex-col border border-slate-100 group">
+                    <div class="h-48 bg-gradient-to-br from-slate-900 to-cyan-900 p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-extrabold group-hover:scale-110 transition-transform duration-300 select-none">02</div>
+                        <div class="flex justify-between items-start z-10">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-amber-500 text-white shadow-sm">連載中</span>
+                            <div class="flex items-center text-amber-400 gap-0.5 text-sm bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white tracking-wide z-10">深海餘燼</h3>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between bg-white">
+                        <div>
+                            <div class="flex flex-wrap gap-1.5 mb-4">
+                                <span class="px-2 py-0.5 bg-cyan-50 text-cyan-700 text-xs font-medium rounded">科幻</span>
+                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded">懸疑</span>
+                                <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-xs font-medium rounded">航海</span>
+                            </div>
+                            <p class="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6">
+                                鄧肯在那艘名為失鄉號的幽靈船上醒來。無邊無際的詭異大海上，超凡與瘋狂蔓延。這是一個迷途旅者努力在神祕世界尋找故鄉與世界真相的故事。
+                            </p>
+                        </div>
+                        <a href="#" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-slate-900 hover:bg-cyan-600 text-white font-medium text-sm rounded-lg shadow-md transition-colors duration-200">
+                            前往閱讀 <i class="fa-solid fa-book-open ml-2 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl overflow-hidden shelf-shadow transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 flex flex-col border border-slate-100 group">
+                    <div class="h-48 bg-gradient-to-br from-slate-900 to-indigo-950 p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-extrabold group-hover:scale-110 transition-transform duration-300 select-none">03</div>
+                        <div class="flex justify-between items-start z-10">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-500 text-white shadow-sm">已完結</span>
+                            <div class="flex items-center text-amber-400 gap-0.5 text-sm bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white tracking-wide z-10">道詭異仙</h3>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between bg-white">
+                        <div>
+                            <div class="flex flex-wrap gap-1.5 mb-4">
+                                <span class="px-2 py-0.5 bg-red-50 text-red-700 text-xs font-medium rounded">東方玄幻</span>
+                                <span class="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded">懸疑</span>
+                                <span class="px-2 py-0.5 bg-orange-50 text-orange-700 text-xs font-medium rounded">修真</span>
+                            </div>
+                            <p class="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6">
+                                詭異降臨，真假難辨。李火旺分不清眼前的到底是現代醫院的幻覺，還是那個充滿瘋狂、邪神與修仙血腥的恐怖古代世界。極度硬核的克系修仙神作。
+                            </p>
+                        </div>
+                        <a href="#" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-slate-900 hover:bg-cyan-600 text-white font-medium text-sm rounded-lg shadow-md transition-colors duration-200">
+                            前往閱讀 <i class="fa-solid fa-book-open ml-2 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="categories" class="py-20 bg-[#121c33] border-t border-b border-slate-800 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">熱門分類瀏覽</h2>
+                <p class="text-slate-400 mt-2 text-sm">點擊熱門標籤，快速探索特定海域的文采</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+                <button class="flex items-center space-x-2 px-6 py-3 bg-slate-800 hover:bg-cyan-600 rounded-full text-slate-200 hover:text-white transition-all duration-200 border border-slate-700/50 shadow-sm group">
+                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400 group-hover:text-white"></i>
+                    <span class="font-medium">東方玄幻</span>
+                </button>
+                <button class="flex items-center space-x-2 px-6 py-3 bg-slate-800 hover:bg-cyan-600 rounded-full text-slate-200 hover:text-white transition-all duration-200 border border-slate-700/50 shadow-sm group">
+                    <i class="fa-solid fa-city text-cyan-400 group-hover:text-white"></i>
+                    <span class="font-medium">都市異能</span>
+                </button>
+                <button class="flex items-center space-x-2 px-6 py-3 bg-slate-800 hover:bg-cyan-600 rounded-full text-slate-200 hover:text-white transition-all duration-200 border border-slate-700/50 shadow-sm group">
+                    <i class="fa-solid fa-heart text-cyan-400 group-hover:text-white"></i>
+                    <span class="font-medium">浪漫言情</span>
+                </button>
+                <button class="flex items-center space-x-2 px-6 py-3 bg-slate-800 hover:bg-cyan-600 rounded-full text-slate-200 hover:text-white transition-all duration-200 border border-slate-700/50 shadow-sm group">
+                    <i class="fa-solid fa-rocket text-cyan-400 group-hover:text-white"></i>
+                    <span class="font-medium">未來科幻</span>
+                </button>
+                <button class="flex items-center space-x-2 px-6 py-3 bg-slate-800 hover:bg-cyan-600 rounded-full text-slate-200 hover:text-white transition-all duration-200 border border-slate-700/50 shadow-sm group">
+                    <i class="fa-solid fa-mask text-cyan-400 group-hover:text-white"></i>
+                    <span class="font-medium">懸疑驚悚</span>
+                </button>
+                <button class="flex items-center space-x-2 px-6 py-3 bg-slate-800 hover:bg-cyan-600 rounded-full text-slate-200 hover:text-white transition-all duration-200 border border-slate-700/50 shadow-sm group">
+                    <i class="fa-solid fa-gamepad text-cyan-400 group-hover:text-white"></i>
+                    <span class="font-medium">網遊遊戲</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-[#0b132b] px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center justify-center p-3 bg-cyan-500/10 rounded-xl text-cyan-400 mb-4">
+                <i class="fa-solid fa-anchor text-2xl"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">關於小說海洋</h2>
+            <p class="text-slate-400 mt-4 leading-relaxed text-base sm:text-lg">
+                書海浩瀚，我們致力於為喜愛網路小說的重度讀者架起一座燈塔。透過清晰的核心評價指標與深度的讀後感分享，讓每一位熱愛閱讀的探險家，都能在波濤洶湧的網路小說浪潮中，精準尋獲最優質的靈魂歸宿。
+            </p>
+        </div>
+    </section>
+
+    <footer class="bg-[#070c1e] text-slate-400 border-t border-slate-800/80 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start space-x-2 text-white font-bold text-lg mb-2">
+                    <i class="fa-solid fa-compass-drafting text-cyan-400"></i>
+                    <span>小說海洋</span>
+                </div>
+                <p class="text-xs text-slate-500">&copy; 2026 小說海洋 心得交流平台. 保留所有權利.</p>
+            </div>
+            
+            <div class="text-center text-sm">
+                <p class="mb-1"><i class="fa-solid fa-envelope mr-2 text-cyan-500"></i> 聯絡我們：contact@novel ocean.com</p>
+                <p class="text-xs text-slate-500">有任何推薦書單或合作提案歡迎來信諮詢</p>
+            </div>
+
+            <div class="flex space-x-4">
+                <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 hover:bg-cyan-600 text-slate-300 hover:text-white transition-colors duration-200" aria-label="Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 hover:bg-cyan-600 text-slate-300 hover:text-white transition-colors duration-200" aria-label="Twitter">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+                <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 hover:bg-cyan-600 text-slate-300 hover:text-white transition-colors duration-200" aria-label="Discord">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        menuBtn.addEventListener('click', () => {
+            // 切換選單的顯示與隱藏
+            mobileMenu.classList.toggle('hidden');
+            
+            // 同步變更漢堡選單圖標 (三條線 <=> X字叉)
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.className = 'fa-solid fa-bars text-xl';
+            } else {
+                menuIcon.className = 'fa-solid fa-xmark text-xl';
+            }
+        });
+
+        // 點擊手機選單項目後自動關閉選單
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.className = 'fa-solid fa-bars text-xl';
+            });
+        });
+    </script>
+</body>
+</html>
