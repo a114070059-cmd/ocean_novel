@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小說海洋 - 在小說的海洋中遨遊</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ocean: {
+                            950: '#020617',
+                            900: '#030712',
+                            800: '#070e1e',
+                            700: '#0b162c',
+                            600: '#0f203e',
+                            500: '#1e3a6a',
+                            accent: '#2563eb',
+                            glow: '#3b82f6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"PingFang TC"', '"Heiti TC"', '"Microsoft JhengHei"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glow-btn {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glow-btn:hover {
+            box-shadow: 0 6px 25px rgba(37, 99, 235, 0.6);
+            transform: translateY(-2px);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+        .card-shadow:hover {
+            transform: translateY(-6px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 15px 35px -5px rgba(59, 130, 246, 0.15), 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-ocean-950 text-slate-100 font-sans min-h-screen flex flex-col selection:bg-ocean-accent selection:text-white overflow-x-hidden">
+
+    <header class="sticky top-0 z-40 bg-ocean-950/80 backdrop-blur-md border-b border-slate-900 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" onclick="switchTab('home')" class="flex items-center space-x-2 group">
+                <span class="text-xl sm:text-2xl font-bold text-blue-400 tracking-wider transition-colors duration-300 group-hover:text-blue-300">
+                    小說海洋
+                </span>
+            </a>
+
+            <!-- 桌機導覽選單 -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm sm:text-base">
+                <a href="#" onclick="switchTab('home')" id="nav-home" class="nav-link text-blue-400 font-medium transition-colors hover:text-blue-300">首頁</a>
+                <a href="#" onclick="switchTab('ranking')" id="nav-ranking" class="nav-link text-slate-400 transition-colors hover:text-blue-400">排行榜</a>
+                <a href="#" onclick="switchTab('categories')" id="nav-categories" class="nav-link text-slate-400 transition-colors hover:text-blue-400">分類</a>
+                <a href="#" onclick="switchTab('forum')" id="nav-forum" class="nav-link text-slate-400 transition-colors hover:text-blue-400">論壇</a>
+            </nav>
+
+            <!-- 手機選單按鈕 -->
+            <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-400 hover:text-white focus:outline-none" aria-label="Toggle Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- 手機全螢幕滿版導覽選單 (依據 截圖 2026-06-02 下午2.07.20.jpg 完美重現) -->
+        <div id="mobile-menu" class="hidden fixed inset-0 z-50 bg-[#020617] flex flex-col p-6 transition-all duration-300">
+            <div class="flex items-center justify-between mb-8">
+                <span class="text-2xl font-bold text-blue-400 tracking-wider">小說海洋</span>
+                <button onclick="toggleMobileMenu()" class="p-2 text-slate-400 hover:text-white focus:outline-none" aria-label="Close Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <a href="#" onclick="switchTab('home'); toggleMobileMenu()" id="m-nav-home" class="block w-full px-4 py-3 rounded-xl text-lg font-bold text-slate-300 hover:bg-ocean-800/30 hover:text-blue-400 transition-all">首頁</a>
+                <a href="#" onclick="switchTab('ranking'); toggleMobileMenu()" id="m-nav-ranking" class="block w-full px-4 py-3 rounded-xl text-lg font-bold text-slate-300 hover:bg-ocean-800/30 hover:text-blue-400 transition-all">排行榜</a>
+                <a href="#" onclick="switchTab('categories'); toggleMobileMenu()" id="m-nav-categories" class="block w-full px-4 py-3 rounded-xl text-lg font-bold text-slate-300 hover:bg-ocean-800/30 hover:text-blue-400 transition-all">分類</a>
+                <a href="#" onclick="switchTab('forum'); toggleMobileMenu()" id="m-nav-forum" class="block w-full px-4 py-3 rounded-xl text-lg font-bold text-slate-300 hover:bg-ocean-800/30 hover:text-blue-400 transition-all">論壇</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要內容區域 -->
+    <main class="flex-grow">
+        
+        <!-- ================= 首頁頁面 ================= -->
+        <div id="page-home" class="tab-content transition-opacity duration-300">
+            <!-- 英雄宣傳區 (Hero Section) -->
+            <section class="relative pt-12 pb-24 sm:pt-20 sm:pb-32 flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+                <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none"></div>
+                
+                <div class="relative z-10 max-w-3xl mx-auto">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-wider text-white mb-6 leading-tight">
+                        在小說的海洋中遨遊
+                    </h1>
+                    <p class="text-slate-400 text-base sm:text-lg md:text-xl font-light mb-10 max-w-xl mx-auto leading-relaxed">
+                        探索最優質的網路小說心得與推薦。
+                    </p>
+                    <button onclick="switchTab('ranking')" class="glow-btn px-8 py-3.5 rounded-full text-white font-semibold text-base tracking-wide flex items-center space-x-2 mx-auto">
+                        <span>立即探索排行榜</span>
+                    </button>
+                </div>
+
+                <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
+                    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[60px] text-ocean-800 fill-current">
+                        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C26.9,8.75,57.05,18.3,90.47,26.85,188.16,51.86,262.1,67.43,321.39,56.44Z"></path>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- 熱門排行區 (Hot Rankings) -->
+            <section class="bg-ocean-800/40 py-20 px-4 sm:px-6 lg:px-8 relative">
+                <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0]">
+                    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[40px] text-ocean-950 fill-current">
+                        <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86C262.1,67.43,188.16,51.86,90.47,26.85,57.05,18.3,26.9,8.75,0,0V120H1200V95.83C1132.19,121.92,1055.71,114.31,985.66,92.83Z"></path>
+                    </svg>
+                </div>
+
+                <div class="max-w-7xl mx-auto relative z-10 pt-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl font-bold tracking-wider text-white">熱門排行</h2>
+                        <div class="w-12 h-1 bg-blue-500 mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- 卡片 1: 深海尋秘 -->
+                        <div class="card-shadow flex flex-col justify-between bg-slate-900/45 hover:bg-slate-900/60 border border-slate-800/80 rounded-2xl p-7 transition-all duration-300 min-h-[280px]">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-xl font-bold text-white tracking-wide">深海尋秘</h3>
+                                    <span class="text-xs px-2.5 py-1 font-semibold rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-500/20">已完結</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-5">
+                                    <span class="text-xs px-2.5 py-1 rounded bg-blue-950/60 text-blue-300 border border-blue-800/30">玄幻</span>
+                                    <span class="text-xs px-2.5 py-1 rounded bg-blue-950/60 text-blue-300 border border-blue-800/30">冒險</span>
+                                </div>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-6 line-clamp-3">
+                                    在這片未知的海洋中，隱藏著古老的文明與強大的力量，主角踏上尋找失落寶藏與自我救贖的壯麗航程。
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-between pt-4 border-t border-slate-800/60">
+                                <div class="flex items-center text-amber-400 text-sm font-bold">
+                                    <svg class="w-4.5 h-4.5 mr-1 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <span>4.8</span>
+                                </div>
+                                <a href="javascript:void(0)" onclick="openModal('深海尋秘', '已完結', ['玄幻', '冒險'], '在這片未知的海洋中，隱藏著古老的文明與強大的力量，主角踏上尋找失落寶藏與自我救贖的壯麗航程。這是一部完美融合深海恐懼、未知文明探索與熱血成長的冒險史詩！不容錯過。', '4.8')" class="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center transition-colors group">
+                                    <span>前往閱讀</span>
+                                    <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- 卡片 2: 都市之海 -->
+                        <div class="card-shadow flex flex-col justify-between bg-slate-900/45 hover:bg-slate-900/60 border border-slate-800/80 rounded-2xl p-7 transition-all duration-300 min-h-[280px]">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-xl font-bold text-white tracking-wide">都市之海</h3>
+                                    <span class="text-xs px-2.5 py-1 font-semibold rounded-md bg-blue-950/80 text-blue-400 border border-blue-500/20">連載中</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-5">
+                                    <span class="text-xs px-2.5 py-1 rounded bg-blue-950/60 text-blue-300 border border-blue-800/30">都市</span>
+                                    <span class="text-xs px-2.5 py-1 rounded bg-blue-950/60 text-blue-300 border border-blue-800/30">異能</span>
+                                </div>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-6 line-clamp-3">
+                                    在現代都市的喧囂下，一場改變世界的風暴即將來臨，而他，是唯一能掌控洋流與命運的覺醒者。
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-between pt-4 border-t border-slate-800/60">
+                                <div class="flex items-center text-amber-400 text-sm font-bold">
+                                    <svg class="w-4.5 h-4.5 mr-1 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <span>4.5</span>
+                                </div>
+                                <a href="javascript:void(0)" onclick="openModal('都市之海', '連載中', ['都市', '異能'], '在現代都市的喧囂下，一場改變世界的風暴即將來臨，而他，是唯一能掌控洋流與命運的覺醒者。看主角如何在鋼筋水泥的都市中，運用海洋異能建立屬於自己的新秩序，極具代入感的現代傳奇！', '4.5')" class="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center transition-colors group">
+                                    <span>前往閱讀</span>
+                                    <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- 卡片 3: 星辰彼岸 -->
+                        <div class="card-shadow flex flex-col justify-between bg-slate-900/45 hover:bg-slate-900/60 border border-slate-800/80 rounded-2xl p-7 transition-all duration-300 min-h-[280px]">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-xl font-bold text-white tracking-wide">星辰彼岸</h3>
+                                    <span class="text-xs px-2.5 py-1 font-semibold rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-500/20">已完結</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-5">
+                                    <span class="text-xs px-2.5 py-1 rounded bg-blue-950/60 text-blue-300 border border-blue-800/30">仙俠</span>
+                                    <span class="text-xs px-2.5 py-1 rounded bg-blue-950/60 text-blue-300 border border-blue-800/30">言情</span>
+                                </div>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-6 line-clamp-3">
+                                    跨越星系的愛戀，從塵埃中綻放的希望，他們能否在彼此的懷中找到心靈最寧靜的依歸與解脫。
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-between pt-4 border-t border-slate-800/60">
+                                <div class="flex items-center text-amber-400 text-sm font-bold">
+                                    <svg class="w-4.5 h-4.5 mr-1 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <span>4.9</span>
+                                </div>
+                                <a href="javascript:void(0)" onclick="openModal('星辰彼岸', '已完結', ['仙俠', '言情'], '跨越星系的愛戀，從塵埃中綻放的希望，他們能否在彼此的懷中找到心靈最寧靜的依歸與解脫。結合極致浩瀚星空科幻色彩與浪漫至極的東方仙俠情懷，口碑極高的感人之作。', '4.9')" class="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center transition-colors group">
+                                    <span>前往閱讀</span>
+                                    <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+                    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[50px] text-ocean-950 fill-current">
+                        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C26.9,8.75,57.05,18.3,90.47,26.85,188.16,51.86,262.1,67.43,321.39,56.44Z"></path>
+                    </svg>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- ================= 排行榜頁面 ================= -->
+        <div id="page-ranking" class="tab-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 transition-opacity duration-300">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-wider text-white">總體排行榜</h2>
+                <p class="text-slate-400 mt-2 text-sm">依據全網點擊量與好評熱度即時更新</p>
+            </div>
+
+            <!-- 排行榜清單 (十本小說) -->
+            <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-4 md:p-8 max-w-4xl mx-auto mb-16">
+                <div class="space-y-4">
+                    <!-- 第一名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/40 to-transparent border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-black text-lg shadow-lg shadow-amber-500/20">1</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">星辰彼岸</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">仙俠 / 言情</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20">已完結</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.9</span>
+                            <button onclick="openModal('星辰彼岸', '已完結', ['仙俠', '言情'], '跨越星系的愛戀，從塵埃中綻放的希望。結合極致浩瀚星空科幻色彩與浪漫至極的東方仙俠情懷，口碑極高的感人之作。', '4.9')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第二名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-slate-400 text-slate-950 flex items-center justify-center font-black text-lg">2</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">深海尋秘</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">玄幻 / 冒險</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20">已完結</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.8</span>
+                            <button onclick="openModal('深海尋秘', '已完結', ['玄幻', '冒險'], '未知的海洋中，隱藏著古老的文明與強大的力量，主角踏上尋找失落寶藏與自我救贖的壯麗航程。', '4.8')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第三名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-amber-700 text-slate-100 flex items-center justify-center font-black text-lg">3</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">都市之海</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">都市 / 異能</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-500/20">連載中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.5</span>
+                            <button onclick="openModal('都市之海', '連載中', ['都市', '異能'], '在現代都市的喧囂下，一場改變世界的風暴即將來臨，而他，是唯一能掌控洋流與命運的覺醒者。', '4.5')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第四名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm">4</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">極地寒流</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">科幻 / 末日</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-500/20">連載中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.7</span>
+                            <button onclick="openModal('極地寒流', '連載中', ['科幻', '末日'], '在冰封末日的終焉，少年攜手殘存的人類，挑戰最殘酷的極寒氣候。', '4.7')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第五名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm">5</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">虛空王座</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">奇幻 / 史詩</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20">已完結</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.6</span>
+                            <button onclick="openModal('虛空王座', '已完結', ['奇幻', '史詩'], '跨越萬年神話的終局之戰，唯有登上虛空王座者才能重塑宇宙秩序。', '4.6')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第六名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm">6</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">萬古劍尊</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">仙俠 / 修真</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-500/20">連載中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.4</span>
+                            <button onclick="openModal('萬古劍尊', '連載中', ['仙俠', '修真'], '一柄斷劍斬斷生死輪迴，少年以微末之身崛起，修得至高劍道。', '4.4')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第七名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm">7</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">超腦紀元</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">科幻 / 懸疑</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20">已完結</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.6</span>
+                            <button onclick="openModal('超腦紀元', '已完結', ['科幻', '懸疑'], '當人類大腦接入雲端，一場隱藏在代碼背後的致命陰謀悄然蔓延。', '4.6')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第八名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm">8</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">天網追兇</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">都市 / 懸疑</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-500/20">連載中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.3</span>
+                            <button onclick="openModal('天網追兇', '連載中', ['都市', '懸疑'], '天才刑警與智商頂尖的幕後黑手展開宿命與智慧的終極對決。', '4.3')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第九名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm">9</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">神話降臨</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">歷史 / 穿越</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20">已完結</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.5</span>
+                            <button onclick="openModal('神話降臨', '已完結', ['歷史', '穿越'], '穿越到大秦帝國，發現這個世界的秦始皇真的擁有超凡神明偉力。', '4.5')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第十名 -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-950/20 to-transparent border border-transparent hover:border-slate-800 transition-all duration-300">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm">10</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">逆流時光</h3>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="text-xs text-slate-400">都市 / 勵志</span>
+                                    <span class="text-xs px-1.5 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-500/20">連載中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end space-x-6 mt-4 sm:mt-0">
+                            <span class="text-amber-400 font-bold">★ 4.2</span>
+                            <button onclick="openModal('逆流時光', '連載中', ['都市', '勵志'], '重回 2000 年，普通人如何憑藉記憶在網路大潮中逆襲改命。', '4.2')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors">
+                                閱讀詳情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= 分類頁面 ================= -->
+        <div id="page-categories" class="tab-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 transition-opacity duration-300">
+            
+            <!-- 分類選單視窗 -->
+            <div id="category-grid-view">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-wider text-white">作品分類</h2>
+                    <p class="text-slate-400 mt-2 text-sm">隨心挑選您喜愛的小說題材與風格</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- 玄幻冒險 -->
+                    <div onclick="showCategoryDetail('fantasy')" class="bg-slate-900/40 hover:bg-ocean-800/40 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer group flex flex-col justify-center items-center min-h-[220px] card-shadow">
+                        <div class="w-16 h-16 rounded-full bg-blue-950/80 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform border border-blue-500/20 shadow-lg shadow-blue-500/10">
+                            <span class="text-3xl">🔮</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2 tracking-wide">玄幻冒險</h3>
+                        <p class="text-slate-400 text-sm">探索未知、奇幻異界</p>
+                    </div>
+
+                    <!-- 都市異能 -->
+                    <div onclick="showCategoryDetail('urban')" class="bg-slate-900/40 hover:bg-ocean-800/40 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer group flex flex-col justify-center items-center min-h-[220px] card-shadow">
+                        <div class="w-16 h-16 rounded-full bg-blue-950/80 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform border border-blue-500/20 shadow-lg shadow-blue-500/10">
+                            <span class="text-3xl">🏙️</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2 tracking-wide">都市異能</h3>
+                        <p class="text-slate-400 text-sm">現代都市、超凡力量</p>
+                    </div>
+
+                    <!-- 仙俠修真 -->
+                    <div onclick="showCategoryDetail('immortal')" class="bg-slate-900/40 hover:bg-ocean-800/40 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer group flex flex-col justify-center items-center min-h-[220px] card-shadow">
+                        <div class="w-16 h-16 rounded-full bg-blue-950/80 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform border border-blue-500/20 shadow-lg shadow-blue-500/10">
+                            <span class="text-3xl">⚔️</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2 tracking-wide">仙俠修真</h3>
+                        <p class="text-slate-400 text-sm">御劍乘風、逆天改命</p>
+                    </div>
+
+                    <!-- 浪漫言情 -->
+                    <div onclick="showCategoryDetail('romance')" class="bg-slate-900/40 hover:bg-ocean-800/40 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer group flex flex-col justify-center items-center min-h-[220px] card-shadow">
+                        <div class="w-16 h-16 rounded-full bg-blue-950/80 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform border border-blue-500/20 shadow-lg shadow-blue-500/10">
+                            <span class="text-3xl">💖</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2 tracking-wide">浪漫言情</h3>
+                        <p class="text-slate-400 text-sm">刻骨銘心、唯美愛情</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分類詳細書籍展示區 (每個點擊後有至少 20 本小說) -->
+            <div id="category-detail-view" class="hidden">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10 pb-6 border-b border-slate-800">
+                        <div class="flex items-center space-x-4 mb-4 sm:mb-0">
+                            <button onclick="hideCategoryDetail()" class="flex items-center space-x-2 text-slate-400 hover:text-blue-400 transition-colors py-2 px-4 rounded-lg bg-slate-900/55 hover:bg-slate-900 border border-slate-800 font-medium text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                                <span>返回分類</span>
+                            </button>
+                            <h2 id="detail-category-title" class="text-2xl sm:text-3xl font-bold tracking-wider text-white">分類名稱</h2>
+                        </div>
+                        <span class="text-sm text-slate-400" id="detail-category-count">共 20 部作品</span>
+                    </div>
+
+                    <!-- 書籍 20 本網格容器 -->
+                    <div id="category-books-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ================= 論壇獨立頁面 ================= -->
+        <div id="page-forum" class="tab-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 transition-opacity duration-300">
+            <!-- 論壇標頭 -->
+            <div class="text-center mb-10">
+                <h1 class="text-4xl font-bold tracking-wider text-white mb-3">讀者交流論壇</h1>
+                <p class="text-slate-400 text-sm">在此分享您對好書的獨特看法，與百萬同好熱切交流</p>
+            </div>
+            
+            <!-- 新增評論表單卡片 (對齊截圖 2026-06-02 下午2.19.45.jpg 邊框樣式與排版) -->
+            <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 sm:p-8 mb-10 card-shadow max-w-4xl mx-auto">
+                <h3 class="text-lg font-bold text-white mb-6 flex items-center space-x-2">
+                    <span class="text-blue-400">✍️</span>
+                    <span>發表我的熱點評論</span>
+                </h3>
+                <form id="comment-form" onsubmit="handleCommentSubmit(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-2">讀者暱稱</label>
+                            <input type="text" id="form-username" required placeholder="請輸入您的暱稱..." class="w-full bg-ocean-950/80 border border-slate-800/80 focus:border-blue-500/50 focus:outline-none rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-600 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-2">評析作品</label>
+                            <select id="form-book" class="w-full bg-ocean-950/80 border border-slate-800/80 focus:border-blue-500/50 focus:outline-none rounded-xl px-4 py-3 text-sm text-slate-200 transition-colors">
+                                <option value="星辰彼岸">星辰彼岸 (排行榜第 1 名)</option>
+                                <option value="深海尋秘">深海尋秘 (排行榜第 2 名)</option>
+                                <option value="都市之海">都市之海 (排行榜第 3 名)</option>
+                                <option value="極地寒流">極地寒流 (排行榜第 4 名)</option>
+                                <option value="虛空王座">虛空王座 (排行榜第 5 名)</option>
+                                <option value="萬古劍尊">萬古劍尊 (排行榜第 6 名)</option>
+                                <option value="超腦紀元">超腦紀元 (排行榜第 7 名)</option>
+                                <option value="天網追兇">天網追兇 (排行榜第 8 名)</option>
+                                <option value="神話降臨">神話降臨 (排行榜第 9 名)</option>
+                                <option value="逆流時光">逆流時光 (排行榜第 10 名)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- 互動評分星級 -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">評分星級</label>
+                        <div class="flex items-center space-x-1.5" id="star-selector">
+                            <button type="button" onclick="setFormRating(1)" class="star-btn text-amber-400 text-2xl focus:outline-none transition-transform hover:scale-110">★</button>
+                            <button type="button" onclick="setFormRating(2)" class="star-btn text-amber-400 text-2xl focus:outline-none transition-transform hover:scale-110">★</button>
+                            <button type="button" onclick="setFormRating(3)" class="star-btn text-amber-400 text-2xl focus:outline-none transition-transform hover:scale-110">★</button>
+                            <button type="button" onclick="setFormRating(4)" class="star-btn text-amber-400 text-2xl focus:outline-none transition-transform hover:scale-110">★</button>
+                            <button type="button" onclick="setFormRating(5)" class="star-btn text-amber-400 text-2xl focus:outline-none transition-transform hover:scale-110">★</button>
+                            <span class="text-slate-400 text-xs ml-3 font-medium" id="rating-text">5.0 / 仙作降世</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">評論內容</label>
+                        <textarea id="form-content" required rows="4" placeholder="請輸入您對這部小說的深刻觀點..." class="w-full bg-ocean-950/80 border border-slate-800/80 focus:border-blue-500/50 focus:outline-none rounded-xl p-4 text-sm text-slate-200 placeholder-slate-600 transition-colors resize-none"></textarea>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="glow-btn px-6 py-3 rounded-xl text-white text-sm font-semibold transition-all">發表評論</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 評論展示清單 (寬度與結構完全對齊 截圖 2026-06-02 下午2.19.45.jpg) -->
+            <div class="space-y-4 max-w-4xl mx-auto mb-16" id="forum-comments-container">
+                <!-- 由 JavaScript 動態生成書評 -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 頁尾 (Footer) -->
+    <footer class="bg-ocean-950 border-t border-slate-900 py-8 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs sm:text-sm text-slate-500 tracking-wider">
+            <p>© 2026 小說海洋. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- 自訂烤吐司成功提示元件 (Elegant Toast Notification) -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300 flex items-center space-x-2 bg-slate-900 border border-blue-500/30 text-slate-100 py-3 px-5 rounded-2xl shadow-2xl">
+        <span class="text-emerald-400">✔️</span>
+        <span id="toast-message" class="text-sm font-semibold">評論發表成功！</span>
+    </div>
+
+    <!-- 小說詳細資訊彈出層 (Detail Modal) -->
+    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+        <div class="absolute inset-0 cursor-pointer" onclick="closeModal()"></div>
+        
+        <div class="relative bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-6 sm:p-8 card-shadow transform scale-95 transition-all duration-300" id="modal-container">
+            <button onclick="closeModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-full bg-slate-800/50 hover:bg-slate-800 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <div id="modal-content">
+                <div class="flex items-center space-x-3 mb-4">
+                    <h3 class="text-2xl font-bold text-white" id="m-title">小說標題</h3>
+                    <span class="text-xs px-2 py-0.5 font-semibold rounded-md" id="m-status">連載中</span>
+                </div>
+                
+                <div class="flex flex-wrap gap-2 mb-6" id="m-tags"></div>
+
+                <div class="mb-6">
+                    <h4 class="text-sm font-semibold text-slate-400 mb-2">作品簡介</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed" id="m-description">這裡會顯示這部小說的詳細內容簡介描述...</p>
+                </div>
+
+                <div class="flex items-center justify-between pt-6 border-t border-slate-800">
+                    <div class="flex items-center text-amber-400 text-base font-bold">
+                        <svg class="w-5 h-5 mr-1 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <span id="m-rating">4.8</span>
+                    </div>
+                    <button onclick="closeModal()" class="px-6 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-all shadow-lg shadow-blue-600/30">
+                        關閉視窗
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 頁面邏輯與 80 本小說強大數據庫 -->
+    <script>
+        const novelsData = {
+            fantasy: [
+                { title: "深海尋秘", status: "已完結", tags: ["玄幻", "冒險"], rating: "4.8", desc: "在這片未知的海洋中，隱藏著古老的文明與強大的力量，主角踏上尋找失落寶藏與自我救贖的壯麗航程。這是一部完美融合深海恐懼、未知文明探索與熱血成長的冒險史詩！不容錯過。" },
+                { title: "神王奧德賽", status: "連載中", tags: ["玄幻", "史詩"], rating: "4.7", desc: "神祇隕落，王權旁落。一位身懷凡人之軀的少年，將在諸神黃昏的廢墟中，開啟一場奪回神王王座的終極奧德賽之旅。" },
+                { title: "龍血封印", status: "已完結", tags: ["玄幻", "熱血"], rating: "4.6", desc: "體內封印著遠古龍皇的狂暴血脈，每一次解封，都是與死神的共舞。當大陸再次陷入陰謀與戰火，他選擇徹底解放血脈！" },
+                { title: "失落神域的秘鑰", status: "連載中", tags: ["冒險", "奇幻"], rating: "4.5", desc: "傳說中能開啟神明居所的黃金鑰匙，遺落在無底的深淵之中。冒險家們前仆後繼，直到少年的指南針指向了那片死寂之地。" },
+                { title: "深淵領主生存指南", status: "連載中", tags: ["玄幻", "領主"], rating: "4.4", desc: "穿越成了深淵最底層的廢柴小領主？沒關係，看我如何用現代科學、經濟戰術與腹黑手段，將地獄改造成諸天萬界的貿易中心！" },
+                { title: "不滅神魂", status: "已完結", tags: ["玄幻", "重生"], rating: "4.9", desc: "萬年封印一朝破解，神尊靈魂重獲新生！縱然修為盡失，但無上的神識仍在，這一世他必將踏碎凌霄，奪回屬於他的一切。" },
+                { title: "迷霧航線的盡頭", status: "已完結", tags: ["冒險", "懸疑"], rating: "4.7", desc: "在一片終年被黑霧籠罩的死亡航線上，沒有指南針可以信賴。迷航的船隻、低語的觸手，究竟迷霧的彼端藏著什麼？" },
+                { title: "法術真解", status: "連載中", tags: ["奇幻", "學院"], rating: "4.3", desc: "在人人迷信吟唱咒語的時代，只有他發現了魔法公式的本質。這是一個依靠微積分和量子力學橫掃魔法界的故事。" },
+                { title: "荒野獵魔手記", status: "已完結", tags: ["冒險", "戰鬥"], rating: "4.6", desc: "黑暗在荒野滋生，巨獸在林間咆咆。孤獨的獵魔人手持雙槍與銀劍，穿梭於陰影之中，收割著一隻隻為禍人間的邪祟。" },
+                { title: "天啟之門", status: "連載中", tags: ["玄幻", "末日"], rating: "4.5", desc: "天際開啟了巨大的裂縫，無數異界神魔如潮水般湧入。當人類命懸一線，被選召的天啟守衛者們築起了鋼鐵長城。" },
+                { title: "遠古王座的呼喚", status: "連載中", tags: ["奇幻", "魔法"], rating: "4.4", desc: "在元素魔法消亡的末法時代，沉睡千年的古代機械魔偶突然甦醒，它的齒輪轉動聲，重新喚醒了世人對神話的恐懼。" },
+                { title: "風暴守望者", status: "已完結", tags: ["冒險", "奇幻"], rating: "4.8", desc: "狂風呼嘯，雷霆肆虐的孤島上，守望者世世代代看守著被封印的雷獸。直到有一天，守望之火突然熄滅了..." },
+                { title: "星光與廢墟", status: "已完結", tags: ["奇幻", "廢土"], rating: "4.5", desc: "在繁星熄滅後的寂靜大地，古老遺骸散發著微弱的螢光。少年手持斑駁的提燈，踏上了尋找光芒起源的孤獨旅途。" },
+                { title: "暗黑領主傳奇", status: "連載中", tags: ["玄幻", "爭霸"], rating: "4.3", desc: "黑暗籠罩著北方大陸，帝國在腐朽中崩塌。新崛起的暗黑領主，將用鋼鐵與秩序，為混亂的世界帶來久違的安寧。" },
+                { title: "黃金之城的詛咒", status: "已完結", tags: ["冒險", "探秘"], rating: "4.6", desc: "沙漠深處，埋藏著由黃金鑄造的無雙古城。進去的人無一能活著出來，而主角為了尋找父親的下落，毅然踏入禁區。" },
+                { title: "諸神退散", status: "連載中", tags: ["玄幻", "無敵"], rating: "4.7", desc: "在神靈意志決定世間一切的時代，一個無法被神術偵測的異類降生。他手握斷天長刀，宣告著諸神時代的終結。" },
+                { title: "永夜君王行記", status: "已完結", tags: ["玄幻", "吸血鬼"], rating: "4.6", desc: "在永無天日的地下世界中，血族與人類的戰爭已持續千年。主角行走於兩界的灰暗地帶，逐漸掌握了顛覆世界的力量。" },
+                { title: "混沌元素使", status: "連載中", tags: ["奇幻", "元素"], rating: "4.2", desc: "水火不容？光暗互克？在混沌元素使眼裡，世間萬物皆可調和。看主角如何調配千奇百怪的融合魔法，驚呆對手！" },
+                { title: "冰封古卷", status: "連載中", tags: ["冒險", "科幻"], rating: "4.5", desc: "在極地冰蓋之下萬米，考古隊發掘出了一本不屬於地球文明的奇特金屬古卷。其記錄的座標，引發了全球探險狂潮。" },
+                { title: "天國階梯", status: "已完結", tags: ["奇幻", "神話"], rating: "4.7", desc: "直通天際的階梯突然在各國大都市上空顯現。想要獲得神明的恩賜、洗滌靈魂的罪孽？那就踏上階梯，接受殘酷考驗。" }
+            ],
+            urban: [
+                { title: "都市之海", status: "連載中", tags: ["都市", "異能"], rating: "4.5", desc: "在現代都市的喧囂下，一場改變世界的風暴即將來臨，而他，是唯一能掌控洋流與命運的覺醒者。看主角如何在鋼筋水泥的都市中，運用海洋異能建立屬於自己的新秩序，極具代入感的現代傳奇！" },
+                { title: "黃金透視眼", status: "已完結", tags: ["都市", "異能"], rating: "4.8", desc: "一場突如其來的車禍，讓普通的當鋪學徒獲得了看穿萬物本質的黃金瞳。從此，古玩撿漏、翡翠賭石、醫治百病，無往不利。" },
+                { title: "天網追兇", status: "連載中", tags: ["都市", "懸疑"], rating: "4.3", desc: "天才刑警與智商天花板的幕後黑手在鋼筋水泥的迷宮中展開宿命的對決，環環相扣、高潮迭起的刑偵神作！" },
+                { title: "逆流時光", status: "連載中", tags: ["都市", "勵志"], rating: "4.2", desc: "重回 2000 年，站在互聯網大潮與房產黃金時代的起點，一個普通打工人如何憑藉前世記憶，逆天改命、守護摯愛。" },
+                { title: "影子主宰", status: "連載中", tags: ["都市", "異能"], rating: "4.6", desc: "白天，他是大公司裡唯唯諾諾的普通白領；夜晚，他能隨意操縱影子，穿梭於繁華都市的陰影之中，維護正義。" },
+                { title: "我的超腦人生", status: "已完結", tags: ["都市", "科技"], rating: "4.7", desc: "大腦潛能突然被開發至 100%，不僅擁有了過目不忘、精準預判的能力，更能直接讀取周遭的電子訊號。科技強國，從我做起！" },
+                { title: "心靈審判官", status: "連載中", tags: ["懸疑", "超能力"], rating: "4.4", desc: "只要注視對方的雙眼，就能讀取對方一生中最深沈的罪惡秘密。面對法律無法制裁的惡人，他以「心靈審判官」之名執行審判。" },
+                { title: "極速救贖", status: "已完結", tags: ["都市", "動作"], rating: "4.5", desc: "曾經的最強特種兵隱姓名為一名計程車司機。某夜，一位身懷巨額機密的受傷女子搭上了他的車，塵封已久的熱血再度沸騰。" },
+                { title: "神級投資人", status: "連載中", tags: ["都市", "商戰"], rating: "4.6", desc: "重生回金融危機前夕，他手握微薄資金，憑藉著腦海中無數的商業巨浪，步步為營，建立起資產高達萬億的超級金融帝國。" },
+                { title: "都市神醫殿", status: "連載中", tags: ["都市", "醫道"], rating: "4.5", desc: "九枚銀針可奪天地造化，一手醫術敢與閻王搶人。神醫下山入都市，退婚、救美、震懾八方豪強，書寫一代都市神話。" },
+                { title: "超能快遞員", status: "已完結", tags: ["都市", "輕鬆"], rating: "4.2", desc: "覺醒了空間傳送異能，卻只想當個快遞員？「您的快遞已跨越半個地球在三秒內送達，請給五星好評！」都市中的傳奇快遞傳奇。" },
+                { title: "虛擬與現實的交界", status: "已完結", tags: ["科幻", "都市"], rating: "4.7", desc: "全球首款完全潛入式虛擬網遊《新世界》開服，但很快大家發現，遊戲中的屬性與技能，竟然可以帶回到真實的都市中！" },
+                { title: "大牌魔術師", status: "連載中", tags: ["都市", "日常"], rating: "4.4", desc: "他手裡的魔術不是戲法，而是真正的空間與元素操縱。在全世界聚光燈下，他面帶微笑地創造著一個又一個不可能的奇蹟。" },
+                { title: "神級選擇系統", status: "已完結", tags: ["都市", "系統"], rating: "4.6", desc: "「叮！面對校花的表白，選擇一：拒絕並大喊我是單身貴族，獲得百萬豪車；選擇二：接受，獲得感冒藥一盒。」主角：系統你認真的？" },
+                { title: "隱形首富的日常生活", status: "連載中", tags: ["都市", "爽文"], rating: "4.3", desc: "繼承了萬億遺產的少年，每天都在為如何花光每日利息而苦惱。為了體驗人生，他低調當起了圖書館管理員。" },
+                { title: "萬能讀心師", status: "已完結", tags: ["都市", "異能"], rating: "4.5", desc: "在充滿爾虞我詐的商業談判與社交場合，他能精準聽見任何人的心裡話。從此掌握了絕對主動權，成為都市交際的天花板。" },
+                { title: "天生魔眼", status: "連載中", tags: ["都市", "戰鬥"], rating: "4.6", desc: "雙瞳之中閃爍著妖冶的紫光，看穿弱點，甚至能短暫控制時間流速。現代高科技都市下的古老超凡力量爭奪。" },
+                { title: "完美歌神", status: "連載中", tags: ["都市", "娛樂圈"], rating: "4.4", desc: "嗓音帶有超凡的情感共鳴異能，能治癒心靈創傷，甚至能操控聽眾的潛意識。看他如何從地下街頭歌手一步步登頂世界歌神。" },
+                { title: "都市守護者", status: "已完結", tags: ["都市", "守護"], rating: "4.7", desc: "當異次元的怪物在都市暗巷蠢蠢欲動，一群默默無聞的平民英雄挺身而出，在璀璨霓虹燈背後守護著百萬市民的安全。" },
+                { title: "大亨崛起", status: "已完結", tags: ["都市", "商戰"], rating: "4.1", desc: "從擺地攤開始，憑藉毒辣的商業眼光、超強的執行力與不屈的拼勁，一步步做大做強，最終成為制霸全球實業的一代巨擘。" }
+            ],
+            immortal: [
+                { title: "星辰彼岸", status: "已完結", tags: ["仙俠", "言情"], rating: "4.9", desc: "跨越星系的愛戀，從塵埃中綻放的希望，他們能否在彼此的懷中找到心靈最寧靜的依歸與解脫。結合極致浩瀚星空科幻色彩與浪漫至極的東方仙俠情懷，口碑極高的感人之作。" },
+                { title: "萬古劍尊", status: "連載中", tags: ["仙俠", "修真"], rating: "4.4", desc: "一柄斷劍斬斷生死輪迴，少年以微末之身崛起，逆天修真、修得至高無上之無情劍道，橫掃諸天神佛！傳統修仙爽文，節奏極快。" },
+                { title: "青蓮問道", status: "已完結", tags: ["修真", "古典"], rating: "4.8", desc: "混沌初開，一株青蓮現世。凡人少年偶得蓮子，踏上求真問道之路。不拜仙佛，不修來世，只求今生無愧、一劍問天。" },
+                { title: "九天雷劫訣", status: "連載中", tags: ["修真", "熱血"], rating: "4.6", desc: "天道有缺，雷劫降世。世人皆視雷劫為死地，他卻運轉無上雷訣，以雷霆淬煉肉身，在毀滅中求得永恆不滅之軀。" },
+                { title: "逍遙仙途", status: "連載中", tags: ["仙俠", "日常"], rating: "4.3", desc: "修仙一定要打打殺殺、爭奪機緣？他偏不。種種仙草、釀釀靈酒、養一隻會吐槽的麒麟寵物，他的逍遙仙途比誰都快活。" },
+                { title: "太古丹神", status: "已完結", tags: ["修真", "重生"], rating: "4.7", desc: "一代至尊丹師遭徒弟暗算隕落，百年後重生成為修真小家族的廢物弟子。憑藉無雙丹道與逆天控火術，這一世他必將重登神壇。" },
+                { title: "一劍封仙", status: "連載中", tags: ["仙俠", "劍道"], rating: "4.5", desc: "任你法寶萬千，神通無數，我自一劍斬之！這是一個極致純粹的劍修故事，看主角如何用手中鐵劍，在波瀾壯闊的仙界闖出滔天名聲。" },
+                { title: "九天飛仙錄", status: "連載中", tags: ["仙俠", "奇幻"], rating: "4.4", desc: "縹緲九天，仙魔並起.背負著振興宗門重任的少年，手持宗門傳承至寶，歷經紅塵百劫，最終白日飛升、名留仙冊。" },
+                { title: "凡人修仙傳奇", status: "已完結", tags: ["修真", "凡人流"], rating: "4.8", desc: "資質平庸的鄉野少年，機緣巧合下踏入修真界.沒有絕頂悟性，沒有逆天背景，他靠著謹慎、心計與大毅力，步步修成真仙。" },
+                { title: "問鼎縹緲峰", status: "連載中", tags: ["仙俠", "門派"], rating: "4.3", desc: "接手了一個瀕臨倒閉的沒落小門派？主角表示莫慌。招收天才弟子、開發修真界房地產、舉辦仙盟大會，打造第一仙門！" },
+                { title: "九幽魔主", status: "已完結", tags: ["修真", "黑暗"], rating: "4.6", desc: "自深淵九幽中覺醒的魔道少年，在正道聯手圍剿之下，以殺止殺，逆天登頂，最終統御百萬魔修，重塑仙魔兩界新秩序。" },
+                { title: "太極陰陽訣", status: "連載中", tags: ["仙俠", "哲理"], rating: "4.5", desc: "太極生兩儀，萬物負陰抱陽。主修陰陽之術的主角，看穿了世間黑白之分的虛妄，在仙魔大戰的夾縫中走出了獨特的第三條路。" },
+                { title: "山海御獸師", status: "已完結", tags: ["仙俠", "神獸"], rating: "4.6", desc: "大荒山海，萬獸奔騰。覺醒了萬獸通靈體質的主角，一路上收服饕餮、誘拐鳳凰、與九尾狐並肩作戰，成為最強山海神話。" },
+                { title: "真武大帝", status: "連載中", tags: ["修真", "爭霸"], rating: "4.4", desc: "肉身承載真武傳承，拳碎星辰，腳踏山河。在萬族入侵、人界危急的生死關頭，少年真武大帝一拳開天，庇護萬靈。" },
+                { title: "渡劫失敗後我成了魔皇", status: "連載中", tags: ["修真", "搞笑"], rating: "4.5", desc: "明明是在渡正道飛升大劫，怎麼一睜眼自己居然躺在魔教聖女的軟榻上，還成了全界聲討的絕代魔皇？在線等，挺急的！" },
+                { title: "落塵仙緣", status: "已完結", tags: ["仙俠", "古典"], rating: "4.7", desc: "紅塵多擾，仙道縹緲。落魄書生在深山遇仙，得傳半卷無名仙書，從此看淡名利功名，一心求仙問道，寫盡仙家縹緲之美。" },
+                { title: "傲世琴尊", status: "連載中", tags: ["修真", "樂器"], rating: "4.3", desc: "一曲琴音，可殺敵於千里之外；一聲弦響，能喚醒沉睡的上古仙神。主角以古琴入道，彈盡仙界恩怨情仇，登臨古今琴尊。" },
+                { title: "遮天仙符", status: "已完結", tags: ["仙俠", "符咒"], rating: "4.6", desc: "不修靈力，只參神符。一張九天蔽日符可遮擋天道窺探，一張太乙瞬移符能跨越洲際。少年符師符法通神，傲立雲端。" },
+                { title: "大荒尋仙記", status: "連載中", tags: ["修真", "洪荒"], rating: "4.5", desc: "大荒世界，神魔混戰，洪荒巨獸橫行。少年走出巫族部落，尋找早已隱匿世間的仙人，踏上了一條漫長而壯麗的洪荒尋仙路。" },
+                { title: "長生不死", status: "已完結", tags: ["仙俠", "長生"], rating: "4.9", desc: "當身邊的紅顏相繼老去，曾經的對手化為塵土，擁有無限壽元的主角，默默守候在時間長河的盡頭，見證紀元的興衰與重塑。" }
+            ],
+            romance: [
+                { title: "微風拂海面", status: "已完結", tags: ["言情", "都市"], rating: "4.8", desc: "這是一個發生在蔚藍海岸邊的浪漫故事。傲嬌的海洋生物學家遇上溫柔的海豚訓練師，治癒心靈創傷，攜手寫下最動人的海洋愛戀。" },
+                { title: "月光下的你", status: "連載中", tags: ["言情", "校園"], rating: "4.7", desc: "青澀的校園時光，櫻花樹下的偶遇，和那個高冷學霸之間既酸澀又甜蜜的心動瞬間。青春最美的樣子，就是有你的陪伴。" },
+                { title: "穿越時空的守護", status: "已完結", tags: ["言情", "穿越"], rating: "4.9", desc: "她意外穿越到了動盪的古代王朝，與那位權傾天下的孤冷王爺展開了一場跨越千年的宿命愛戀，為了彼此，哪怕與天下人為敵。" },
+                { title: "深海玫瑰", status: "連載中", tags: ["言情", "豪門"], rating: "4.6", desc: "她是帶刺的黑玫瑰，他是深沈不可測的財閥繼承人。這是一場充滿智商對決、互相試探、最終泥足深陷、欲罷不能的極致拉扯愛戀。" },
+                { title: "心動頻率", status: "連載中", tags: ["言情", "娛樂圈"], rating: "4.4", desc: "天才音樂女製作人與當紅一線實力派男演員的隱秘辦公室地下情。每一次同台的對視，都是兩人心動頻率的最佳應答。" },
+                { title: "餘生皆是你", status: "已完結", tags: ["言情", "治癒"], rating: "4.7", desc: "在人生最灰暗、瀕臨絕望的時刻，他就像一道溫暖而不刺眼的陽光，照亮了她整個人生。這是一部細水長流、暖心治癒的浪漫神作。" },
+                { title: "暗戀日記", status: "連載中", tags: ["言情", "雙向奔赴"], rating: "4.5", desc: "寫滿了暗戀心事的祕密日記，原以為是一場無疾而終的單相思，沒想到在畢業那天，他也遞過來一本一模一樣的筆記本..." },
+                { title: "璀璨星光不及你", status: "已完結", tags: ["言情", "娛樂圈"], rating: "4.6", desc: "金牌經紀人女主角一手將那個落魄少年捧紅為國際巨星。在萬眾矚目的星光大道上，他手捧獎盃，當著全球媒體深情向她告白。" },
+                { title: "你是我的暖陽", status: "連載中", tags: ["言情", "醫生"], rating: "4.5", desc: "幹練帥氣的急診科男醫生遇上古靈精怪的心理諮商師。在充滿生離死別的醫院長廊中，他們相互支持，成為彼此最堅定的避風港。" },
+                { title: "霸道總裁的合約戀人", status: "已完結", tags: ["言情", "都市"], rating: "4.1", desc: "起初，這只是一份為了應付長輩而簽訂的假結婚合約。然而朝夕相處的點點滴滴，卻悄然融化了冰山總裁的心，假戲終成真。" },
+                { title: "風起時想你", status: "連載中", tags: ["言情", "職場"], rating: "4.4", desc: "在競爭激烈的新聞媒體界，兩位王牌記者從最初的針鋒相對、互相競爭，到在調查一樁重大案件中並肩作戰、暗生情愫。" },
+                { title: "時光深處的戀人", status: "已完結", tags: ["言情", "科幻"], rating: "4.6", desc: "男主角擁有了在睡夢中穿越時空的能力，他在過去與未來的時間軸中拼命奔跑，只為了在無數個平行世界中，拯救他的愛人。" },
+                { title: "假裝不愛你", status: "連載中", tags: ["言情", "虐戀"], rating: "4.3", desc: "因為家族世代的宿怨，他們明明深愛著彼此，卻不得不戴上冷酷的面具互相傷害。在痛苦與理智的邊緣，愛恨糾練，極致催淚。" },
+                { title: "隔壁的青梅竹馬", status: "已完結", tags: ["言情", "輕鬆"], rating: "4.5", desc: "從小一起長大的兩小無猜，打打鬧鬧了二十年。當他身邊出現其他追求者時，她才恍然發現，原來那個討厭鬼早已占據了整顆心。" },
+                { title: "豪門契約嬌妻", status: "連載中", tags: ["言情", "豪門"], rating: "4.2", desc: "背負家族債務的純真少女，無奈答應豪門繼承人的契約婚姻。在充滿豪門恩怨與利益糾葛的世界中，他用溫柔替她擋下了所有風雨。" },
+                { title: "玫瑰與槍炮", status: "已完結", tags: ["言情", "軍旅"], rating: "4.7", desc: "勇敢無畏的戰地女記者遇上鋼鐵意志的特種兵隊長。在漫天硝煙與戰火紛飛的異國他鄉，他們的愛情如玫瑰般堅韌而絢麗地綻放。" },
+                { title: "甜度百分百", status: "連載中", tags: ["言情", "甜寵"], rating: "4.8", desc: "無雜質、無誤會、純度高達 100% 的超甜寵文！溫柔傲嬌甜點師與知名貓咪博主的日常撒糖生活，看完保證讓你想立刻談戀愛！" },
+                { title: "在回憶裡等妳", status: "連載中", tags: ["言情", "破鏡重圓"], rating: "4.4", desc: "大學時期無奈分手的初戀情侶，七年後在商業合作的談判桌上重逢。眼神交會的瞬間，彼此都知道，原來那份愛從未在回憶裡消逝。" },
+                { title: "總裁秘書養成記", status: "已完結", tags: ["言情", "職場"], rating: "4.2", desc: "職場小白兔誤打誤撞成為傳聞中冷血挑剔的大總裁秘書。看她如何憑藉著認真、樂觀與呆萌，一步步征服嚴苛總裁，收穫愛情。" },
+                { title: "戀愛盲盒", status: "已完結", tags: ["言情", "奇幻"], rating: "4.6", desc: "女主角獲得了一個神奇的盲盒，每天打開都能抽到一位具有奇特超能力的虛擬男友陪伴一天。直到某天，現實中的鄰居帥哥來敲門..." }
+            ]
+        };
+
+        let commentsData = [
+            { id: 1, username: "書海潛水大師", bookTitle: "星辰彼岸", rating: 5, content: "仙俠與星空的結合寫得太宏大了！尤其是主角跨越九重星系尋找愛人的那段，文字表現力極強，令人淚目。極力推薦！", time: "2026-06-02 11:15", likes: 124 }
+        ];
+
+        let currentFormRating = 5;
+
+        // 頁面初始化
+        window.onload = function() {
+            renderComments();
+        };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('opacity-100');
+                el.classList.add('opacity-0');
+            });
+
+            const activePage = document.getElementById(`page-${tabId}`);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+                setTimeout(() => {
+                    activePage.classList.remove('opacity-0');
+                    activePage.classList.add('opacity-100');
+                }, 50);
+            }
+
+            // 更新導覽列高亮 (桌機版)
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('text-blue-400', 'font-medium');
+                link.classList.add('text-slate-400');
+            });
+            const activeLink = document.getElementById(`nav-${tabId}`);
+            if (activeLink) {
+                activeLink.classList.remove('text-slate-400');
+                activeLink.classList.add('text-blue-400', 'font-medium');
+            }
+
+            if (tabId === 'categories') {
+                hideCategoryDetail();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 手機版導覽選單開關
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                updateMobileMenuHighlight();
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+
+        // 更新手機版選單的高亮狀態 (對齊 截圖 2026-06-02 下午2.07.20.jpg)
+        function updateMobileMenuHighlight() {
+            const tabs = ['home', 'ranking', 'categories', 'forum'];
+            tabs.forEach(tab => {
+                const el = document.getElementById(`m-nav-${tab}`);
+                if (el) {
+                    el.className = "block w-full px-4 py-3 rounded-xl text-lg font-bold text-slate-300 hover:bg-ocean-800/30 hover:text-blue-400 transition-all";
+                }
+            });
+
+            let currentTab = 'home';
+            if (!document.getElementById('page-ranking').classList.contains('hidden')) currentTab = 'ranking';
+            if (!document.getElementById('page-categories').classList.contains('hidden')) currentTab = 'categories';
+            if (!document.getElementById('page-forum').classList.contains('hidden')) currentTab = 'forum';
+
+            const activeEl = document.getElementById(`m-nav-${currentTab}`);
+            if (activeEl) {
+                activeEl.className = "block w-full px-4 py-3 rounded-xl text-lg font-bold text-blue-400 bg-ocean-800/60 transition-all border-l-4 border-blue-500 pl-3";
+            }
+        }
+
+        function renderComments() {
+            const container = document.getElementById('forum-comments-container');
+            container.innerHTML = '';
+
+            // 依按讚與時間降序排序
+            const sortedComments = [...commentsData].sort((a, b) => b.likes - a.likes || b.id - a.id);
+
+            sortedComments.forEach(comment => {
+                let starsHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= comment.rating) {
+                        starsHTML += `<span class="text-amber-400">★</span>`;
+                    } else {
+                        starsHTML += `<span class="text-slate-600">★</span>`;
+                    }
+                }
+
+                const commentHTML = `
+                    <div class="bg-slate-900/30 border border-slate-800/80 rounded-2xl p-6 hover:border-slate-700 transition-all duration-300 card-shadow">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
+                            <div class="flex items-center space-x-3.5">
+                                <!-- 讀者頭像 (圓圈內嵌書本圖示風格) -->
+                                <div class="w-9 h-9 rounded-full bg-blue-950/80 border border-blue-500/20 flex items-center justify-center font-bold text-xs text-blue-300 shadow">
+                                    📖
+                                </div>
+                                <div>
+                                    <span class="text-white font-bold text-sm block tracking-wide">${comment.username}</span>
+                                    <span class="text-slate-500 text-xs">${comment.time}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-slate-950/30 py-1 px-3 rounded-full border border-slate-800/50">
+                                <span class="text-xs text-slate-400">評鑑作品: <strong class="text-blue-400">${comment.bookTitle}</strong></span>
+                                <div class="flex space-x-0.5 text-sm">${starsHTML}</div>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-5 pl-1">${comment.content}</p>
+                        
+                        <!-- 底部互動列 -->
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-800/60 text-xs text-slate-500">
+                            <span>來自 小說海洋 Web 社群</span>
+                            <button onclick="likeComment(${comment.id})" class="flex items-center space-x-2 py-1.5 px-3.5 rounded-lg bg-blue-950/20 hover:bg-blue-950/60 text-blue-400 border border-blue-900/40 hover:border-blue-500/30 transition-all">
+                                <span>👍</span>
+                                <span class="font-bold">${comment.likes}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', commentHTML);
+            });
+        }
+
+        // 按讚留言
+        function likeComment(commentId) {
+            const comment = commentsData.find(c => c.id === commentId);
+            if (comment) {
+                comment.likes += 1;
+                renderComments();
+                showToast("感謝支持，按讚成功！");
+            }
+        }
+
+        function setFormRating(rating) {
+            currentFormRating = rating;
+            const starButtons = document.querySelectorAll('#star-selector .star-btn');
+            const ratingTexts = {
+                1: "1.0 / 尚需磨礪",
+                2: "2.0 / 差強人意",
+                3: "3.0 / 平平之作",
+                4: "4.0 / 難得佳作",
+                5: "5.0 / 仙作降世"
+            };
+
+            starButtons.forEach((btn, index) => {
+                if (index < rating) {
+                    btn.classList.add('text-amber-400');
+                    btn.classList.remove('text-slate-600');
+                } else {
+                    btn.classList.add('text-slate-600');
+                    btn.classList.remove('text-amber-400');
+                }
+            });
+
+            document.getElementById('rating-text').innerText = ratingTexts[rating];
+        }
+
+        function handleCommentSubmit(event) {
+            event.preventDefault();
+
+            const usernameInput = document.getElementById('form-username');
+            const bookSelect = document.getElementById('form-book');
+            const contentInput = document.getElementById('form-content');
+
+            // 取得台北標準時間 (2026-06-02)
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const date = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const formattedTime = `${year}-${month}-${date} ${hours}:${minutes}`;
+
+            const newComment = {
+                id: Date.now(),
+                username: usernameInput.value.trim(),
+                bookTitle: bookSelect.value,
+                rating: currentFormRating,
+                content: contentInput.value.trim(),
+                time: formattedTime,
+                likes: 0
+            };
+
+            commentsData.unshift(newComment);
+
+            // 清空與重設表單
+            usernameInput.value = '';
+            contentInput.value = '';
+            setFormRating(5);
+
+            renderComments();
+            showToast(`成功對《${newComment.bookTitle}》發表了您的獨特觀點！`);
+        }
+
+        // 顯示烤吐司提示 (代替 alert)
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-10');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-10');
+            }, 2500);
+        }
+
+        function showCategoryDetail(categoryKey) {
+            const gridView = document.getElementById('category-grid-view');
+            const detailView = document.getElementById('category-detail-view');
+            const titleEl = document.getElementById('detail-category-title');
+            const countEl = document.getElementById('detail-category-count');
+            const booksGrid = document.getElementById('category-books-grid');
+
+            const categoryNames = {
+                fantasy: "玄幻冒險",
+                urban: "都市異能",
+                immortal: "仙俠修真",
+                romance: "浪漫言情"
+            };
+
+            titleEl.innerText = categoryNames[categoryKey] || "作品分類";
+
+            const books = novelsData[categoryKey] || [];
+            countEl.innerText = `共 ${books.length} 部精選作品`;
+
+            booksGrid.innerHTML = '';
+            books.forEach(book => {
+                const badgeColor = book.status === '已完結' 
+                    ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/20' 
+                    : 'bg-blue-950/80 text-blue-400 border border-blue-500/20';
+
+                const tagsHTML = book.tags.map(tag => 
+                    `<span class="text-xs px-2.5 py-1 rounded bg-blue-950/60 text-blue-300 border border-blue-800/30">${tag}</span>`
+                ).join(' ');
+
+                const cardHTML = `
+                    <div class="card-shadow flex flex-col justify-between bg-slate-900/45 hover:bg-slate-900/60 border border-slate-800/80 rounded-2xl p-7 transition-all duration-300 min-h-[280px]">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold text-white tracking-wide">${book.title}</h3>
+                                <span class="text-xs px-2.5 py-1 font-semibold rounded-md ${badgeColor}">${book.status}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-5">
+                                ${tagsHTML}
+                            </div>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-6 line-clamp-3">
+                                ${book.desc}
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-800/60">
+                            <div class="flex items-center text-amber-400 text-sm font-bold">
+                                <svg class="w-4.5 h-4.5 mr-1 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <span>${book.rating}</span>
+                            </div>
+                            <a href="javascript:void(0)" onclick="openModal('${book.title}', '${book.status}', ${JSON.stringify(book.tags)}, '${book.desc}', '${book.rating}')" class="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center transition-colors group">
+                                <span>前往閱讀</span>
+                                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                booksGrid.insertAdjacentHTML('beforeend', cardHTML);
+            });
+
+            gridView.classList.add('hidden');
+            detailView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 返回分類選單
+        function hideCategoryDetail() {
+            const gridView = document.getElementById('category-grid-view');
+            const detailView = document.getElementById('category-detail-view');
+
+            detailView.classList.add('hidden');
+            gridView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openModal(title, status, tags, description, rating) {
+            const modal = document.getElementById('detail-modal');
+            const container = document.getElementById('modal-container');
+            
+            document.getElementById('m-title').innerText = title;
+            document.getElementById('m-description').innerText = description;
+            document.getElementById('m-rating').innerText = rating;
+            
+            const statusEl = document.getElementById('m-status');
+            statusEl.innerText = status;
+            if (status === '已完結') {
+                statusEl.className = "text-xs px-2.5 py-1 font-semibold rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-500/20";
+            } else {
+                statusEl.className = "text-xs px-2.5 py-1 font-semibold rounded-md bg-blue-950/80 text-blue-400 border border-blue-500/20";
+            }
+
+            const tagsEl = document.getElementById('m-tags');
+            tagsEl.innerHTML = '';
+            tags.forEach(tag => {
+                const tagSpan = document.createElement('span');
+                tagSpan.className = "text-xs px-2.5 py-1 rounded bg-blue-950/60 text-blue-300 border border-blue-800/30";
+                tagSpan.innerText = tag;
+                tagsEl.appendChild(tagSpan);
+            });
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-95');
+            container.classList.add('scale-100');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            const container = document.getElementById('modal-container');
+            
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
